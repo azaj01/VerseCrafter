@@ -3,9 +3,7 @@
 </p>
 
 <h2 align="center"> 
-  <a href="INSERT_ARXIV_LINK">
     VerseCrafter: Dynamic Realistic Video World Model with 4D Geometric Control
-  </a>
 </h2>
 
 <a href="https://arxiv.org/pdf/2601.05138"><img src='https://img.shields.io/badge/arXiv-Paper-red?style=flat&logo=arXiv&logoColor=red' alt='arxiv'></a>&nbsp;
@@ -219,7 +217,7 @@ The following are input image and its corresponding results:
 ##### Step 4: Customize Trajectory (Manual Operation in Blender)
 
 This step requires **Blender** to interactively edit the 4D control scene. We also provide a demonstration video that shows step-by-step Blender operations for this process:  
-[Watch the Blender operation video here](https://www.bilibili.com/video/BV1xxxxxxx)
+[Watch the Blender operation video here](https://sixiaozheng.github.io/VerseCrafter_page/assets/blender_op_1080p_com.mp4)
 
 1. **Prepare Scripts**:
 
