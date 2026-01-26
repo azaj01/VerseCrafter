@@ -28,11 +28,23 @@ bl_info = {
 import bpy
 import os
 import sys
+import importlib
 
 # Add addon directory to path for imports
 addon_dir = os.path.dirname(os.path.realpath(__file__))
 if addon_dir not in sys.path:
     sys.path.append(addon_dir)
+
+# Force reload of modules when addon is refreshed
+# This ensures code changes take effect without restarting Blender
+if "operators" in locals():
+    importlib.reload(operators)
+    importlib.reload(panels)
+    importlib.reload(properties)
+
+from . import operators
+from . import panels
+from . import properties
 
 from .operators import (
     VERSECRAFTER_OT_preprocess,

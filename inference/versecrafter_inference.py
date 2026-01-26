@@ -94,7 +94,7 @@ GPU_memory_mode     = "model_full_load"
 ulysses_degree      = args.ulysses_degree
 ring_degree         = args.ring_degree
 # Use FSDP to save more GPU memory in multi gpus.
-fsdp_dit            = False
+fsdp_dit            = True
 fsdp_text_encoder   = True
 # Compile will give a speedup in fixed resolution and need a little GPU memory. 
 # The compile_dit is not compatible with the fsdp_dit and sequential_cpu_offload.
@@ -115,7 +115,7 @@ teacache_threshold  = 0.10
 # reduce the impact of TeaCache on generated video quality.
 num_skip_start_steps = 5
 # Whether to offload TeaCache tensors to cpu to save a little bit of GPU memory.
-teacache_offload    = False
+teacache_offload    = True
 
 # Skip some cfg steps in inference for acceleration
 # Recommended to be set between 0.00 and 0.25

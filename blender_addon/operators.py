@@ -827,7 +827,7 @@ class VERSECRAFTER_OT_load_scene(Operator):
                 
                 print(f"[INFO] Found {num_objects} objects in single frame")
                 
-                cmap = matplotlib.colormaps['tab10']
+                cmap = matplotlib.colormaps['tab20']
                 
                 for obj_idx, (obj_id_str, obj_data) in enumerate(gaussian_params.items()):
                     obj_id = int(obj_id_str)
@@ -920,7 +920,7 @@ class VERSECRAFTER_OT_load_scene(Operator):
                 frames = json_data.get("frames", [])
                 if frames:
                     first_frame = frames[0]
-                    cmap = matplotlib.colormaps['tab10']
+                    cmap = matplotlib.colormaps['tab20']
                     
                     for obj in first_frame.get("objects", []):
                         obj_id = obj["object_id"]
@@ -1167,7 +1167,7 @@ class VERSECRAFTER_OT_export_trajectories(Operator):
                     for obj_id_str in input_data["gaussian_params"].keys():
                         try:
                             obj_id = int(obj_id_str)
-                            # Use (obj_id - 1) as color index to match tab10/tab20 colormap
+                            # Use (obj_id - 1) as color index to match tab20 colormap
                             obj_id_to_color_idx[obj_id_str] = obj_id - 1
                         except ValueError:
                             obj_id_to_color_idx[obj_id_str] = 0

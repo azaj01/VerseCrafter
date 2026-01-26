@@ -909,7 +909,9 @@ def build_background(
     png_path: str,
     npz_path: str,
     mask_dir: str,
-    device: str = 'cuda'
+    device: str = 'cuda',
+    target_height: int = None,
+    target_width: int = None
 ) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, int, int]:
     """Load background RGB, depth, masks and return 3D point cloud.
     
@@ -918,6 +920,8 @@ def build_background(
         npz_path: Path to NPZ file with depth and intrinsics
         mask_dir: Directory containing object masks
         device: Computation device
+        target_height: Target height for resizing (if None, use original)
+        target_width: Target width for resizing (if None, use original)
     
     Returns:
         Tuple of (points_3d, colors, depth, intrinsic, height, width)
@@ -925,13 +929,30 @@ def build_background(
     # Load RGB image
     image = cv2.imread(png_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    H, W = image.shape[:2]
+    H_orig, W_orig = image.shape[:2]
+    
+    # Determine target resolution
+    if target_height is not None and target_width is not None:
+        H, W = target_height, target_width
+        logger.info(f"Resizing from {H_orig}×{W_orig} to {H}×{W} for faster rendering")
+        image = cv2.resize(image, (W, H), interpolation=cv2.INTER_LINEAR)
+    else:
+        H, W = H_orig, W_orig
+    
     image_tensor = torch.from_numpy(image).to(device)
     
     # Load depth and intrinsics
     data = np.load(npz_path)
-    depth = torch.from_numpy(data['depth'].astype(np.float32)).to(device)
+    depth_orig = torch.from_numpy(data['depth'].astype(np.float32)).to(device)
     intrinsic = torch.from_numpy(data['intrinsic'].astype(np.float32)).to(device)
+    
+    # Resize depth map if needed
+    if target_height is not None and target_width is not None:
+        depth_orig_np = depth_orig.cpu().numpy()
+        depth_resized = cv2.resize(depth_orig_np, (W, H), interpolation=cv2.INTER_LINEAR)
+        depth = torch.from_numpy(depth_resized).to(device)
+    else:
+        depth = depth_orig
     
     # Denormalize intrinsics if in normalized format
     intrinsic_denorm = intrinsic.clone()
@@ -1165,6 +1186,8 @@ def parse_args():
     parser.add_argument('--trajectory_radius', type=float, default=0.03, help='Trajectory line radius')
     parser.add_argument('--gaussian_mask_threshold', type=float, default=0.003, help='Gaussian projection threshold')
     parser.add_argument('--sample_frames', type=int, default=10, help='Number of frames to sample')
+    parser.add_argument('--target_height', type=int, default=720, help='Target rendering height')
+    parser.add_argument('--target_width', type=int, default=1280, help='Target rendering width')
     return parser.parse_args()
 
 
@@ -1192,7 +1215,9 @@ def main():
     # Step 1: Load background point cloud
     logger.info("Step 1: Loading background point cloud")
     bg_points, bg_colors, first_intrinsics, first_extrinsic, image_height, image_width = build_background(
-        args.png_path, args.npz_path, args.mask_dir, device
+        args.png_path, args.npz_path, args.mask_dir, device,
+        target_height=args.target_height,
+        target_width=args.target_width
     )
     
     # Step 2: Load camera trajectory

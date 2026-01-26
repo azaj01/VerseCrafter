@@ -64,7 +64,7 @@
    pip install git+https://github.com/microsoft/MoGe.git
 
    # Install Grounded-SAM-2
-   cd inference/Grounded-SAM-2
+   cd third_party/Grounded-SAM-2
    pip install -e .
    pip install --no-build-isolation -e grounding_dino
 

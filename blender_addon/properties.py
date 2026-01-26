@@ -172,6 +172,23 @@ class VerseCrafterProperties(PropertyGroup):
         min=0
     )
     
+    # Rendering resolution
+    target_height: IntProperty(
+        name="Target Height",
+        description="Target rendering height (set to 0 to use original resolution)",
+        default=720,
+        min=0,
+        max=4096
+    )
+    
+    target_width: IntProperty(
+        name="Target Width",
+        description="Target rendering width (set to 0 to use original resolution)",
+        default=1280,
+        min=0,
+        max=4096
+    )
+    
     # Status tracking
     step1_complete: BoolProperty(name="Step 1 Complete", default=False)
     step2_complete: BoolProperty(name="Step 2 Complete", default=False)

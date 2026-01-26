@@ -11,6 +11,18 @@ import warnings
 import logging
 import argparse
 
+import cv2
+import numpy as np
+import torch
+from PIL import Image
+from tqdm import tqdm
+
+from moge.model import import_model_class_by_version
+from moge.utils.io import save_glb, save_ply
+from moge.utils.vis import colorize_depth, colorize_normal
+from moge.utils.geometry_numpy import depth_occlusion_edge_numpy
+import utils3d
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -31,17 +43,6 @@ def main(
     save_ply_: bool,
     show: bool,
 ):
-    import cv2
-    import numpy as np
-    import torch
-    from PIL import Image
-    from tqdm import tqdm
-
-    from moge.model import import_model_class_by_version
-    from moge.utils.io import save_glb, save_ply
-    from moge.utils.vis import colorize_depth, colorize_normal
-    from moge.utils.geometry_numpy import depth_occlusion_edge_numpy
-    import utils3d
 
     device = torch.device(device_name)
     logger.debug('Torch device: %s', device)
