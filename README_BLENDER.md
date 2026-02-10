@@ -78,7 +78,7 @@ After completion, you'll see:
 ### Step 2: Customize Trajectories
 
 We also provide a demonstration video that shows step-by-step Blender operations for this process:  
-[Watch the Blender operation video here](https://www.bilibili.com/video/BV1xxxxxxx)
+[Watch the Blender operation video here](https://sixiaozheng.github.io/VerseCrafter_page/assets/blender_op_1080p_com.mp4)
 
 
 1. Expand **Step 2: Customize Trajectory** panel
